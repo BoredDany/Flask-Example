@@ -5,4 +5,5 @@ class StoreModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), unique=True, nullable=False)
-    items = db.relationship("ItemModel", back_populates="store", lazy="dynamic") # Creates a list of ItemModel objects that have store_id equal to this store's id
+    items = db.relationship("ItemModel", back_populates="store", lazy="dynamic", cascade="all, delete, delete-orphan") # Creates a list of ItemModel objects that have store_id equal to this store's id
+    tags = db.relationship("TagModel", back_populates="store", lazy="dynamic")
