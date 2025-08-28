@@ -4,6 +4,8 @@ services:
   web: # service name
     build: . #  build file is in current directory
     ports: # ports to expose
-      - "5000:5000" # map host port 5000 to container port 5000
+      - "5000:80" # map host port 5000 to container port 5000
     volumes: # mount host path to container path
       - .:/app # mount current directory to /app in container
+    env_file:
+      - .env

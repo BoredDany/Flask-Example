@@ -9,9 +9,11 @@ from flask_jwt_extended import JWTManager
 import os
 from blocklist import BLOCKLIST
 from flask_migrate import Migrate
+from dotenv import load_dotenv
 
 def create_app(db_url=None):
     app = Flask(__name__) # Creates Flask application instance, name must be the same as file name
+    load_dotenv()  # Load environment variables from .env file
 
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Flask Example API"
