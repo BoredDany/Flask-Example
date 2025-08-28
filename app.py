@@ -1,20 +1,31 @@
+import os
+import redis
+
+from rq import Queue
+
 from flask import Flask, jsonify
+from flask_smorest import Api
+from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
+
 from resources.item import blp as ItemBlueprint
 from resources.store import blp as StoreBlueprint
 from resources.tag import blp as TagBlueprint
 from resources.user import blp as UserBlueprint
-from flask_smorest import Api
+
 from db import db
-from flask_jwt_extended import JWTManager
-import os
 from blocklist import BLOCKLIST
-from flask_migrate import Migrate
 from dotenv import load_dotenv
+
 
 def create_app(db_url=None):
     app = Flask(__name__) # Creates Flask application instance, name must be the same as file name
     load_dotenv()  # Load environment variables from .env file
-
+    
+    connection = redis.from_url(os.getenv("REDIS_URL"))
+    
+    app.queue = Queue("emails", connection=connection)
+    
     app.config["PROPAGATE_EXCEPTIONS"] = True
     app.config["API_TITLE"] = "Flask Example API"
     app.config["API_VERSION"] = "v1"
