@@ -7,5 +7,20 @@ services:
       - "5000:80" # map host port 5000 to container port 5000
     volumes: # mount host path to container path
       - .:/app # mount current directory to /app in container
+    depends_on:
+      - db
     env_file:
       - .env
+
+  db:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: mydatabase
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  postgres_data:
